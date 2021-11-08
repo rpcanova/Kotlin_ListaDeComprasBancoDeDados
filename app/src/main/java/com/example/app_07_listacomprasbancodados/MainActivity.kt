@@ -1,10 +1,13 @@
-package com.example.app_06_listacomprasclassedados
+package com.example.app_07_listacomprasbancodados
 
-import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.*
 import kotlinx.android.synthetic.main.activity_main.*
+import org.jetbrains.anko.db.parseList
+import org.jetbrains.anko.db.select
+import org.jetbrains.anko.startActivity
+import org.jetbrains.anko.db.rowParser
 import java.text.NumberFormat
 import java.util.*
 
@@ -20,8 +23,7 @@ class MainActivity : AppCompatActivity() {
         listViewProduto.adapter = produtosAdapter
 
         btnAdicionar.setOnClickListener {
-            val intent = Intent(this, CadastroActivity::class.java)
-            startActivity(intent)
+            startActivity<CadastroActivity>()
         }
 
         listViewProdutos.setOnItemClickListener { adapterView: AdapterView<*>, view, position: Int, id ->
@@ -42,15 +44,24 @@ class MainActivity : AppCompatActivity() {
         super.onResume()
 
         val adapter = listViewProdutos.adapter as ProdutoAdapter
+        database.use {
+            select("produtos").exec{
+                val parser = rowParser{id: Int, nome: String, quantidade: Int, valor: Double, foto: ByteArray? ->
+                    Produto(id, nome, quantidade, valor, foto?.toBitmap())
+                }
+                var listaProdutos = parseList(parser)
 
-        adapter.clear()
-        adapter.addAll(produtosGlobal)
+                adapter.clear()
+                adapter.addAll(listaProdutos)
 
-        var soma = 0.0
-        for (item in produtosGlobal) {
-            soma += item.valor * item.quantidade
+                var soma = 0.0
+
+                for (item in listaProdutos) {
+                    soma += item.valor * item.quantidade
+                }
+                val f = NumberFormat.getCurrencyInstance(Locale("pt", "br"))
+                txtTotal.text = "TOTAL: ${f.format(soma)}"
+            }
         }
-        val f = NumberFormat.getCurrencyInstance(Locale("pt", "br"))
-        txtTotal.text = "Total: ${f.format(soma)}"
     }
 }

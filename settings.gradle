@@ -6,5 +6,5 @@ dependencyResolutionManagement {
         jcenter() // Warning: this repository is going to shut down soon
     }
 }
-rootProject.name = "App_06_ListaComprasClasseDados"
+rootProject.name = "App_07_ListaComprasBancoDados"
 include ':app'

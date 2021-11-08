@@ -7,7 +7,7 @@
     android:background="#DFFBDA"
     android:orientation="vertical"
     android:padding="16dp"
-    tools:context=".CadastroActivity">
+    tools:context="com.example.app_07_listacomprasbancodados.CadastroActivity">
 
     <TextView
         android:layout_width="match_parent"

@@ -1,10 +1,12 @@
-package com.example.app_06_listacomprasclassedados
+package com.example.app_07_listacomprasbancodados
 
 import android.content.Intent
 import android.graphics.Bitmap
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import kotlinx.android.synthetic.main.activity_cadastro.*
+import org.jetbrains.anko.db.insert
+import org.jetbrains.anko.toast
 
 class CadastroActivity : AppCompatActivity() {
 
@@ -36,11 +38,23 @@ class CadastroActivity : AppCompatActivity() {
             val valor = txtValor.text.toString()
 
             if (produto.isNotEmpty() && qtde.isNotEmpty() && valor.isNotEmpty()) {
-                val prod = Produto(produto, qtde.toInt(), valor.toDouble())
-                produtosGlobal.add(prod)
-                txtProduto.text.clear()
-                txtQtde.text.clear()
-                txtValor.text.clear()
+                database.use {
+                    val idProduto = insert("Produtos",
+                    "nome" to produto,
+                    "quantidade" to qtde,
+                    "valor" to valor.toDouble(),
+                    "foto" to imageBitmap?.toByteArray()
+                    )
+
+                    if(idProduto!=-1L){
+                        toast("Item inserido com sucesso!")
+                        txtProduto.text.clear()
+                        txtQtde.text.clear()
+                        txtValor.text.clear()
+                    } else{
+                        toast("Erro ao inserir no banco de dados")
+                    }
+                }
             } else {
                 if (txtProduto.text.isEmpty()) {
                     txtProduto.error = "Preencha o nome do Produto"

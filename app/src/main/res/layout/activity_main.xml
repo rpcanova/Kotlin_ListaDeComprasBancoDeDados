@@ -7,7 +7,7 @@
     android:background="#DFFBDA"
     android:orientation="vertical"
     android:padding="16dp"
-    tools:context=".MainActivity">
+    tools:context="com.example.app_07_listacomprasbancodados.MainActivity">
 
     <Button
         android:id="@+id/btnAdicionar"

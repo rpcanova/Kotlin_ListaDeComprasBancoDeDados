@@ -1,10 +1,11 @@
-package com.example.app_06_listacomprasclassedados
+package com.example.app_07_listacomprasbancodados
 
 import android.graphics.Bitmap
 
 data class Produto(
+    val id: Int,
     val nome: String,
     val quantidade: Int,
     val valor: Double,
-    val foto: Bitmap?=null
+    val foto: Bitmap? = null
 )

@@ -1,4 +1,4 @@
-package com.example.app_06_listacomprasclassedados
+package com.example.app_07_listacomprasbancodados
 
 import android.support.test.InstrumentationRegistry
 import android.support.test.runner.AndroidJUnit4
